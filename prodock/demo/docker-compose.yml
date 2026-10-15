@@ -1,0 +1,53 @@
+# Live demo containers. Start them with `python demo/demo.py up` (it exports the trace, writes
+# clock.json and fills in the starting limits below). Do not run `docker compose up` directly.
+#
+# Every container runs the same tiny load generator (demo/loadgen/burn.py) on a stock Python
+# image. Each one replays a different part of the trace, and really burns CPU and holds memory.
+#   web-frontend           resized by ProDock
+#   web-frontend-reactive  same load, resized by threshold rules (the usual autoscaler)
+#   web-frontend-static    same load, fixed limit, never resized (what most people do)
+#   batch-worker           resized by ProDock (shows the memory floor around job starts)
+# All of them start at the same static limit, like the simulated evaluation.
+
+x-loadgen: &loadgen
+  image: python:3.12.7-slim-bookworm
+  command: ["python", "-u", "/demo/loadgen/burn.py"]
+  volumes: ["./:/demo:ro"]
+  restart: unless-stopped       # an OOM-killed container comes back and rejoins the clock
+  init: true
+  stop_grace_period: 2s
+  labels:
+    prodock.demo: "1"
+
+services:
+  web-frontend:
+    <<: *loadgen
+    container_name: web-frontend
+    environment: {TRACE: web-frontend}
+    cpus: ${WEB_CPUS:-2.18}
+    mem_limit: ${WEB_MEM:-1400m}
+    memswap_limit: ${WEB_MEM:-1400m}
+
+  web-frontend-reactive:
+    <<: *loadgen
+    container_name: web-frontend-reactive
+    environment: {TRACE: web-frontend}
+    cpus: ${WEB_CPUS:-2.18}
+    mem_limit: ${WEB_MEM:-1400m}
+    memswap_limit: ${WEB_MEM:-1400m}
+
+  web-frontend-static:
+    <<: *loadgen
+    container_name: web-frontend-static
+    environment: {TRACE: web-frontend}
+    cpus: ${WEB_CPUS:-2.18}
+    mem_limit: ${WEB_MEM:-1400m}
+    memswap_limit: ${WEB_MEM:-1400m}
+
+  batch-worker:
+    <<: *loadgen
+    container_name: batch-worker
+    environment: {TRACE: batch-worker}
+    cpus: ${BATCH_CPUS:-3.29}
+    mem_limit: ${BATCH_MEM:-2300m}
+    memswap_limit: ${BATCH_MEM:-2300m}

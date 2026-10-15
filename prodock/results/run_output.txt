@@ -1,0 +1,71 @@
+
+[1/6] Generating a simulated Docker host (4 containers, 7 days, 1 row per minute)
+  40,320 rows  |  train days 1-4, validation day 5, test days 6-7
+
+[2/6] Training ProDock (Isolation Forest -> LSTM)
+  training windows: (22912, 30, 10)  validation windows: (5748, 30, 10)
+  epoch  1  train MSE 0.01503  val MSE 0.00497
+  epoch  2  train MSE 0.00484  val MSE 0.00482
+  epoch  3  train MSE 0.00463  val MSE 0.00466
+  epoch  4  train MSE 0.00459  val MSE 0.00500
+  epoch  5  train MSE 0.00455  val MSE 0.00468
+  epoch  6  train MSE 0.00453  val MSE 0.00445
+  epoch  7  train MSE 0.00446  val MSE 0.00428
+  epoch  8  train MSE 0.00440  val MSE 0.00444
+  epoch  9  train MSE 0.00430  val MSE 0.00417
+  epoch 10  train MSE 0.00431  val MSE 0.00414
+  epoch 11  train MSE 0.00407  val MSE 0.00470
+  epoch 12  train MSE 0.00447  val MSE 0.00438
+  epoch 13  train MSE 0.00442  val MSE 0.00453
+  epoch 14  train MSE 0.00438  val MSE 0.00401
+  epoch 15  train MSE 0.00430  val MSE 0.00440
+  epoch 16  train MSE 0.00425  val MSE 0.00381
+  epoch 17  train MSE 0.00419  val MSE 0.00393
+  epoch 18  train MSE 0.00402  val MSE 0.00361
+  epoch 19  train MSE 0.00394  val MSE 0.00390
+  epoch 20  train MSE 0.00374  val MSE 0.00349
+  epoch 21  train MSE 0.00418  val MSE 0.00408
+  epoch 22  train MSE 0.00366  val MSE 0.00368
+  epoch 23  train MSE 0.00374  val MSE 0.00336
+  epoch 24  train MSE 0.00366  val MSE 0.00425
+  epoch 25  train MSE 0.00360  val MSE 0.00342
+  done in 47.9s
+
+      Ablation: same LSTM without the burst column
+
+[3/6] Forecast accuracy on the 2 unseen test days (peak CPU over next 3 min)
+                    Model  MAE (cores)  RMSE (cores)  MAE on peak ticks  Under-predicted %
+       Naive (last value)        0.080         0.232              0.154             74.357
+           Moving average        0.130         0.394              0.404             81.917
+           Linear (Ridge)        0.059         0.121              0.098             41.858
+    LSTM (no burst score)        0.053         0.119              0.105             54.258
+ProDock: IsoForest + LSTM        0.061         0.128              0.102             29.823
+
+[4/6] Replaying the test days under four allocation policies
+                   Policy  SLO violations %  Unserved CPU (core-h)  Wasted CPU (core-h)  Avg CPU utilisation %  Reserved CPU (core-h)  Wasted memory (GB-h)  OOM kills  Limit changes
+                   Static              1.28                   2.17               246.50                  41.56                 374.55                204.08          0              0
+                 Reactive              2.14                   4.66               122.83                  50.66                 248.39                142.58         24           1206
+Predictive (ConLAR-style)              2.48                   0.56                34.89                  72.98                 164.56                 39.09         93          11473
+           ProDock (ours)              0.70                   0.22                54.26                  65.43                 184.26                168.26          1           1966
+
+[5/6] Headroom sweep (trade-off curve)
+
+[6/6] Drawing graphs
+  saved figures/fig1_workload_traces.png
+  saved figures/fig2_burst_detector.png
+  saved figures/fig3_lstm_training.png
+  saved figures/fig4_forecast_vs_actual.png
+  saved figures/fig5_forecast_error.png
+  saved figures/fig6_policy_timelines.png
+  saved figures/fig7_policy_comparison.png
+  saved figures/fig8_tradeoff_curve.png
+  saved figures/fig9_memory_limits.png
+
+HEADLINE
+  cpu_waste_cut_vs_static_%: 78.0
+  cpu_waste_cut_vs_reactive_%: 55.8
+  slo_violations_%: {'Static': 1.28, 'Reactive': 2.14, 'Predictive (ConLAR-style)': 2.48, 'ProDock (ours)': 0.7}
+  fewer_limit_changes_than_conlar_x: 5.8
+  oom_kills: {'Static': 0, 'Reactive': 24, 'Predictive (ConLAR-style)': 93, 'ProDock (ours)': 1}
+
+All outputs are in ./results and ./figures

@@ -1,0 +1,9 @@
+# Tested with Python 3.12 on Windows 11 + Docker Desktop 29 (WSL2, cgroup v2).
+# scikit-learn is pinned exactly: models/prodock_pipeline.pkl contains a pickled IsolationForest,
+# which only loads reliably with the same version. With another version, run `python run_experiment.py`
+# once to rebuild the model (same seed, same numbers).
+numpy==2.5.3
+pandas==3.0.6
+scikit-learn==1.9.1
+matplotlib==3.11.2
+docker==7.2.0      # only needed for run_live.py (real Docker)

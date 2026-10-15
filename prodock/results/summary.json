@@ -1,0 +1,102 @@
+{
+  "forecast_accuracy": [
+    {
+      "Model": "Naive (last value)",
+      "MAE (cores)": 0.07997040133578112,
+      "RMSE (cores)": 0.23160215713911894,
+      "MAE on peak ticks": 0.15375950886401957,
+      "Under-predicted %": 74.35696906499825
+    },
+    {
+      "Model": "Moving average",
+      "MAE (cores)": 0.1303213513617658,
+      "RMSE (cores)": 0.39361408390068175,
+      "MAE on peak ticks": 0.4036969975557557,
+      "Under-predicted %": 81.91692735488357
+    },
+    {
+      "Model": "Linear (Ridge)",
+      "MAE (cores)": 0.05872941039149139,
+      "RMSE (cores)": 0.12055805308973261,
+      "MAE on peak ticks": 0.09823054855040794,
+      "Under-predicted %": 41.857838025721236
+    },
+    {
+      "Model": "LSTM (no burst score)",
+      "MAE (cores)": 0.05261924158041845,
+      "RMSE (cores)": 0.11946353816651271,
+      "MAE on peak ticks": 0.10484115764573682,
+      "Under-predicted %": 54.257907542579076
+    },
+    {
+      "Model": "ProDock: IsoForest + LSTM",
+      "MAE (cores)": 0.060906454077767104,
+      "RMSE (cores)": 0.12751396782216615,
+      "MAE on peak ticks": 0.1022500603948631,
+      "Under-predicted %": 29.822732012513036
+    }
+  ],
+  "policy_comparison": [
+    {
+      "Policy": "Static",
+      "SLO violations %": 1.2760416666666667,
+      "Unserved CPU (core-h)": 2.165448498708713,
+      "Wasted CPU (core-h)": 246.495681416539,
+      "Avg CPU utilisation %": 41.563072573058996,
+      "Reserved CPU (core-h)": 374.553220531029,
+      "Wasted memory (GB-h)": 204.07532509944522,
+      "OOM kills": 0,
+      "Limit changes": 0
+    },
+    {
+      "Policy": "Reactive",
+      "SLO violations %": 2.1440972222222223,
+      "Unserved CPU (core-h)": 4.662076764449827,
+      "Wasted CPU (core-h)": 122.8277606932513,
+      "Avg CPU utilisation %": 50.65786346413327,
+      "Reserved CPU (core-h)": 248.3886715420002,
+      "Wasted memory (GB-h)": 142.57518837712607,
+      "OOM kills": 24,
+      "Limit changes": 1206
+    },
+    {
+      "Policy": "Predictive (ConLAR-style)",
+      "SLO violations %": 2.482638888888889,
+      "Unserved CPU (core-h)": 0.5573008945644506,
+      "Wasted CPU (core-h)": 34.89089844789416,
+      "Avg CPU utilisation %": 72.97751802348145,
+      "Reserved CPU (core-h)": 164.55658516652844,
+      "Wasted memory (GB-h)": 39.09060243960972,
+      "OOM kills": 93,
+      "Limit changes": 11473
+    },
+    {
+      "Policy": "ProDock (ours)",
+      "SLO violations %": 0.703125,
+      "Unserved CPU (core-h)": 0.22335262406822676,
+      "Wasted CPU (core-h)": 54.259167655243886,
+      "Avg CPU utilisation %": 65.43013217610145,
+      "Reserved CPU (core-h)": 184.25880264437438,
+      "Wasted memory (GB-h)": 168.25528746614282,
+      "OOM kills": 1,
+      "Limit changes": 1966
+    }
+  ],
+  "headline": {
+    "cpu_waste_cut_vs_static_%": 78.0,
+    "cpu_waste_cut_vs_reactive_%": 55.8,
+    "slo_violations_%": {
+      "Static": 1.28,
+      "Reactive": 2.14,
+      "Predictive (ConLAR-style)": 2.48,
+      "ProDock (ours)": 0.7
+    },
+    "fewer_limit_changes_than_conlar_x": 5.8,
+    "oom_kills": {
+      "Static": 0,
+      "Reactive": 24,
+      "Predictive (ConLAR-style)": 93,
+      "ProDock (ours)": 1
+    }
+  }
+}

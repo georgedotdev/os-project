@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# written fresh by `python prodock/demo/demo.py up` on every run
+prodock/demo/trace.csv
+prodock/demo/clock.json
+
+# SQLite side files and generic live runs (the committed live_demo.sqlite is a rehearsal record)
+*.sqlite-wal
+*.sqlite-shm
+prodock/results/live_decisions.sqlite
+
+# old copy of the code; everything in it now lives in prodock/
+ProDock_code.zip
+
+# Office lock files
+~$*
