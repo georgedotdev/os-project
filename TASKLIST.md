@@ -8,9 +8,9 @@ Status as of 2026-10-14. Priority: **P0** = needed for the live demo, **P1** = s
 
 - [x] **A1.** Start Docker Desktop. It's installed (v29.1.3), but the engine isn't running, so `docker info` fails.
 - [x] **A2.** Install the missing Python packages: `pip install -r prodock/requirements.txt`. `scikit-learn` and the `docker` SDK aren't installed. numpy, pandas and matplotlib may also be missing.
-- [ ] **A3.** Pin the package versions in `requirements.txt`. The file currently uses `>=`. `models/prodock_pipeline.pkl` is a pickle containing a scikit-learn IsolationForest, and loading it with a different scikit-learn version can fail or give warnings.
+- [x] **A3.** Pin the package versions in `requirements.txt`. The file currently uses `>=`. `models/prodock_pipeline.pkl` is a pickle containing a scikit-learn IsolationForest, and loading it with a different scikit-learn version can fail or give warnings.
 - [x] **A4.** Run `python run_experiment.py` once, so the model is rebuilt with the scikit-learn version installed on this machine (about 1 to 2 minutes, fixed seed, same numbers).
-- [ ] **A5.** Run `git init` and make a first commit. The project currently has no version control. The only "backup" is the zip file.
+- [x] **A5.** Run `git init` and make a first commit. The project currently has no version control. The only "backup" is the zip file.
 
 ## B. Live demo on real Docker (P0): what the teacher is asking for
 
